@@ -8,27 +8,36 @@ type configurationForm = {
 }
 
 export async function handleConfigFormSubmit(state: configurationForm, formData: FormData){
-    console.log(formData)
-    const engine = formData.get("engine")
-    const color = formData.get("color")
-    const wheels = formData.get("wheels")
-    const extras = formData.getAll("extras")
-    const action = formData.get("action")
-
-    console.log(engine)
-    console.log(color)
-    console.log(wheels)
-    console.log(extras)
-    console.log(action)
-
-    // Based on action either only create configuration otherwise also create order
-    if(true){
-        return {
-            message: "order-success"
+    var object: Record<string, any> = {};
+    formData.forEach((value, key) => {
+        if (!object.hasOwnProperty(key)){
+            object[key] = value;
+            return;
         }
-    } else {
-        return {
-            error: "Something went wrong!"
+        if (!Array.isArray(object[key])){
+            object[key] = [object[key]]
         }
+        object[key].push(value);
+
+    });
+
+
+    var json = JSON.stringify(object)
+    // Logic for Ordering or creating config is done in backend
+    try {
+        const res = await fetch(process.env.BACKENDURL + "/configuration", 
+            {
+                headers: {"content-type": "application/json"},
+                method: "POST",
+                body:json,
+            }
+        )
+        const answer = await res.json()
+        return answer
+    } catch (e){
+        console.error(e)
+        return {
+            "error": "Something went wrong"
+        }   
     }
 }

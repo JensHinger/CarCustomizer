@@ -14,7 +14,7 @@ export default async function Header() {
                 {cars.map((car: Car) => 
                     <Link key={car.id} className="border rounded-md flex flex-col p-2 m-2 hover:bg-slate-500" href={`/${car.id}`}>
                         <p>{car.name}</p>
-                        <p>ab {car.basePrice.toLocaleString("de-DE", { style: "currency", currency: "EUR" })}</p>
+                        <p>ab {car.price.toLocaleString("de-DE", { style: "currency", currency: "EUR" })}</p>
                     </Link>
                 )}
             </div>

@@ -9,14 +9,12 @@ export default function ChooseMultipleConfigurationItem(
         configurationItems,
         selectedItems,
         setSelectedItems,
-        updateTotalPrice,
     }:
     {
         configurationCategory: string,
         configurationItems: configurationItem[]
         selectedItems: configurationItem[]
         setSelectedItems: (item: configurationItem[]) => void
-        updateTotalPrice: (change: number) => void
     }) {
 
     // To Show Message Allowing maximum selection of 5 items
@@ -32,12 +30,10 @@ export default function ChooseMultipleConfigurationItem(
         // Deselect option
         if (selectedItems.includes(item)){
             setSelectedItems(selectedItems.filter((elem) => elem != item))
-            updateTotalPrice(-item.price)
         } else {
             // Select option
             if (selectedItems.length < 5){
                 setSelectedItems([item, ...selectedItems])
-                updateTotalPrice(item.price)
             } else {
                 // Too many options selected
                 target.checked = false
@@ -53,7 +49,9 @@ export default function ChooseMultipleConfigurationItem(
             </h1>
             {
                 configurationItems.map((item) => {
-                    const currentItemSelected = selectedItems.includes(item)
+                    const currentItemSelected = selectedItems.find((sel_item) => item.id == sel_item.id) != undefined
+                    console.log(currentItemSelected, item.name)
+                    console.log(selectedItems, item)
                     return  (
                         <div key={item.id} >
                             <label className={`grid grid-cols-2 p-1 items-center rounded-sm cursor-pointer text-center ${currentItemSelected? "bg-zinc-500 hover:bg-zinc-600" : "hover:bg-gray-800"}`}>

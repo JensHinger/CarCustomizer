@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Model Alpha",
-      "basePrice": 20000,
+      "price": 20000,
       "engines": [
         { "id": 1, "name": "90 PS Benzin", "price": 0 },
         { "id": 2, "name": "120 PS Diesel", "price": 1500 },
@@ -31,7 +31,7 @@
     {
       "id": 2,
       "name": "Model Beta",
-      "basePrice": 28000,
+      "price": 28000,
       "engines": [
         { "id": 4, "name": "150 PS Benzin", "price": 0 },
         { "id": 5, "name": "180 PS Diesel", "price": 2000 },

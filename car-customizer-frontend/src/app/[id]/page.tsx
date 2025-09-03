@@ -1,21 +1,30 @@
-import { fetchCarById, fetchCarConfigurationItems } from "@/lib/data"
+import { fetchCarById, fetchCarConfigurationItems, fetchConfiguration } from "@/lib/data"
 import Configurator from "@/Components/Configurator"
 import Image from "next/image"
 
 export default async function Page(
-    {params}: 
-    {params: Promise<{id: string}>}
+    {params, searchParams}: 
+    {
+        params: Promise<{id: string}>
+        searchParams: { config_id?: string }
+    }
 ) {
 
-    // Load all configuration options for a car
+    const {config_id} = await searchParams
+    // If config_id is present, fetch the corresponding configuration
+    let savedConfig = null;
+    if (config_id) {
+        savedConfig = await fetchConfiguration(config_id);
+    }
 
+    // Load all configuration options for a car
     const carId = (await params).id
     const configurationItems = await fetchCarConfigurationItems(carId)
-    const car = await fetchCarById(carId)
 
+    const car = configurationItems.car
     const engineSelection = configurationItems.engines
     const colorSelection = configurationItems.colors
-    const rimSelection = configurationItems.rims
+    const wheelSelection = configurationItems.wheels
     const extrasSelection = configurationItems.extras
 
     return (
@@ -31,8 +40,9 @@ export default async function Page(
             car={car}
             engineSelection={engineSelection}
             colorSelection={colorSelection}
-            rimSelection={rimSelection}
+            wheelSelection={wheelSelection}
             extrasSelection={extrasSelection}      
+            savedConfiguration={savedConfig}
             />
         </div>
         

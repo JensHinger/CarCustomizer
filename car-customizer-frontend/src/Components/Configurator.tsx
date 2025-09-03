@@ -4,39 +4,47 @@ import { Car, configurationItem } from "@/lib/data"
 import ChooseOneConfigurationItem from "./ChooseOneConfigurationItem"
 import ChooseMultipleConfigurationItem from "./ChooseMultipleConfigurationItem"
 import { handleConfigFormSubmit } from "@/lib/actions"
-import { useActionState, useState } from "react"
+import { useActionState, useEffect, useState } from "react"
+import Link from "next/link"
 
 export default function Configurator(
     {
         car,
         engineSelection,
         colorSelection,
-        rimSelection,
+        wheelSelection,
         extrasSelection,
+        savedConfiguration
     }
     :{
         car: Car
         engineSelection: configurationItem[]
         colorSelection: configurationItem[]
-        rimSelection: configurationItem[]
+        wheelSelection: configurationItem[]
         extrasSelection: configurationItem[]
+        savedConfiguration?: {
+            engine_id: number;
+            color_id: number;
+            wheel_id: number;
+            extra_ids: number[]
+        } | null
     }
 ) {
 
     const [state, formAction, isPending] = useActionState(handleConfigFormSubmit, null)
     
-    const [currentPrice, setCurrentPrice] = useState(car.basePrice)
-    const [currentStep, setCurrentStep] = useState(0);
+    const [carPrice, setCarPrice] = useState<number>(car.price)
+    const [currentStep, setCurrentStep] = useState(savedConfiguration? 4: 0);
     const maxStep = 4 // Should not necessarily be hard coded
 
-    const [selectedEngine, setSelectedEngine] = useState<configurationItem>(engineSelection[0])
-    const [selectedColor, setSelectedColor] = useState<configurationItem>(engineSelection[0])
-    const [selectedWheels, setSelectedWheels] = useState<configurationItem>(engineSelection[0])
-    const [selectedExtras, setSelectedExtras] = useState<configurationItem[]>([])
-    
-    const changePrice = (change: number) => {
-        setCurrentPrice(currentPrice + change)
-    }  
+    const checkConfiguration = (selection: configurationItem[], id: number) => {
+        return selection.find((e) => e.id === id) || selection[0]
+    }
+
+    const [selectedEngine, setSelectedEngine] = useState<configurationItem>(savedConfiguration? checkConfiguration(engineSelection, savedConfiguration.engine_id): engineSelection[0])
+    const [selectedColor, setSelectedColor] = useState<configurationItem>(savedConfiguration? checkConfiguration(colorSelection, savedConfiguration.color_id): colorSelection[0])
+    const [selectedWheels, setSelectedWheels] = useState<configurationItem>(savedConfiguration? checkConfiguration(wheelSelection, savedConfiguration.wheel_id): wheelSelection[0])
+    const [selectedExtras, setSelectedExtras] = useState<configurationItem[]>(savedConfiguration? extrasSelection.filter((e) => savedConfiguration.extra_ids.includes(e.id)): [])
 
     const handleConfigurationSwitch = (change: number) => {
         if (currentStep + change < 0 || currentStep + change > maxStep){
@@ -48,19 +56,31 @@ export default function Configurator(
     const orderButtonDisabled = isPending || state?.message == "order-success"
     const saveButtonDisable = isPending || state?.message == "save-success" || orderButtonDisabled
 
+    useEffect(() => {
+        const totalPrice = car.price +
+            selectedEngine.price +
+            selectedColor.price +
+            selectedWheels.price +
+            selectedExtras.reduce((sum, extra) => sum + extra.price, 0)
+
+        setCarPrice(totalPrice)
+    }, [selectedEngine, selectedColor, selectedWheels, selectedExtras])
 
     return (
          <form 
             action={formAction}
             className="w-md float-right mx-auto"
          >
+            <input 
+                type="hidden" 
+                name="car"
+                value={car.id} />
             <div className={currentStep == 0? "": "hidden"}>
                 <ChooseOneConfigurationItem
                 configurationCategory="Engine"
                 configurationItems={engineSelection}
                 selectedItem={selectedEngine}
                 setSelectedItem={setSelectedEngine}
-                updateTotalPrice={changePrice}
                 />
             </div>
                 
@@ -70,16 +90,14 @@ export default function Configurator(
                 configurationItems={colorSelection}
                 selectedItem={selectedColor}
                 setSelectedItem={setSelectedColor}
-                updateTotalPrice={changePrice}
                 />
             </div>
             <div className={currentStep == 2? "": "hidden"}>
                 <ChooseOneConfigurationItem 
-                configurationCategory="Wheels"
-                configurationItems={rimSelection}
+                configurationCategory="Wheel"
+                configurationItems={wheelSelection}
                 selectedItem={selectedWheels}
                 setSelectedItem={setSelectedWheels}
-                updateTotalPrice={changePrice}
                 />
             </div>
             <div className={currentStep == 3? "": "hidden"}>
@@ -88,7 +106,6 @@ export default function Configurator(
                 configurationItems={extrasSelection}
                 selectedItems={selectedExtras}
                 setSelectedItems={setSelectedExtras}
-                updateTotalPrice={changePrice}
                 />
             </div>
             <div className={`space-y-4 grid grid-cols-2 ${currentStep == 4? "": "hidden"}`}>
@@ -113,7 +130,7 @@ export default function Configurator(
             <hr className="my-4"/>
             <div className="grid grid-cols-2 p-5">
                 <p className="text-xl font-semibold">Total Price: </p>
-                <p className="text-center text-xl">{currentPrice.toLocaleString("de-DE", { style: "currency", currency: "EUR" })}</p>
+                <p className="text-center text-xl">{carPrice.toLocaleString("de-DE", { style: "currency", currency: "EUR" })}</p>
             </ div>
             
             {currentStep == 4 &&
@@ -139,6 +156,15 @@ export default function Configurator(
             <div>
                 {isPending? "...Loading": state?.error}
             </div>
+            {state?.configuration_url? 
+            <div className="font-bold text-center mt-5">
+                <Link href={state.configuration_url}>Click to see your saved Configuration</Link>
+            </div> : ""}
+            {state?.order_id?            
+            <div className="font-bold text-center mt-5 text-green-500">
+                Order was placed Successfully with the order Number: {state.order_id}
+            </div> : ""}
+
         </ form>
     )
 }

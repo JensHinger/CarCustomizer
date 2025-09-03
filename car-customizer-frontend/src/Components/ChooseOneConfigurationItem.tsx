@@ -8,14 +8,12 @@ export default function ChooseOneConfigurationItem(
         configurationItems,
         selectedItem,
         setSelectedItem,
-        updateTotalPrice,
     }:
     {
         configurationCategory: string,
         configurationItems: configurationItem[],
         selectedItem: configurationItem,
         setSelectedItem: (item: configurationItem) => void,
-        updateTotalPrice: (change: number) => void,
     }
 ) {
 
@@ -28,7 +26,6 @@ export default function ChooseOneConfigurationItem(
     const handleOptionChange = (item: configurationItem) => {
         setSelectedItem(item)
         setCurrentOptionPrice(item.price)
-        updateTotalPrice(item.price - currentOptionPrice)
     }
 
     return (
