@@ -1,0 +1,14 @@
+services:
+  postgresql:
+    image: 'postgres:latest'
+    ports:
+      - $PGPORT:5432
+    volumes:
+      - 'postgresql_data:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_USER: $PGUSER
+      POSTGRES_PASSWORD: $PGPASSWORD
+      POSTGRES_DB: $PGDATABASE
+          
+volumes:
+  postgresql_data:
