@@ -1,4 +1,4 @@
-from models.wheel import Wheel
+from models import Wheel
 from model import db
 
 def get_all_wheels_for_car(car_id: int):

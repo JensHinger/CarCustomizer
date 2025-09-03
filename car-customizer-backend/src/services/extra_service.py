@@ -1,4 +1,4 @@
-from models.extra import Extra
+from models import Extra
 from model import db
 
 def get_all_extras_for_car(car_id: int):

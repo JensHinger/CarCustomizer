@@ -1,5 +1,6 @@
 from flask import Flask
 from dotenv import load_dotenv
+from setup import seed_database
 import os
 
 load_dotenv()
@@ -12,11 +13,14 @@ def create_app():
     from model import db
     db.init_app(app)
     
-    # Just for testing
-    @app.route("/")
-    def hello():
-        return "Hello World"
-
+    # Seed the database with test data
+    @app.route("/seed")
+    def seed():
+        res = seed_database()
+        return res
+        
     from routes.car_routes import car
+    from routes.configuration_routes import configuration
     app.register_blueprint(car)
+    app.register_blueprint(configuration)
     return app

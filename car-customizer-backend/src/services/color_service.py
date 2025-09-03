@@ -1,4 +1,4 @@
-from models.color import Color
+from models import Color
 from model import db
 
 def get_all_colors_for_car(car_id: int):

@@ -12,7 +12,10 @@ class Extra(db.Model):
 
     # Connection to Car Table
     car_id: Mapped[int] = mapped_column(ForeignKey("car.id"))
+
     car: Mapped["Car"] = relationship(back_populates="extras") 
+    configuration: Mapped["Configuration"] = relationship(secondary="configuration_extra")
+
 
     def __repr__(self):
         return f"Extra(id={self.id}, name={self.name}, price={self.price}, car={self.car})"

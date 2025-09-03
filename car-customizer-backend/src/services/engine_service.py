@@ -1,4 +1,4 @@
-from models.engine import Engine
+from models import Engine
 from model import db
 
 def get_all_engines_for_car(car_id: int):

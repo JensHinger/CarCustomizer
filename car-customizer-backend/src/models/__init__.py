@@ -5,5 +5,6 @@ from .wheel import Wheel
 from .extra import Extra
 from .configuration import Configuration
 from .order import Order
+from .configurationExtra import ConfigurationExtra
 
-__all__ = ['Car', 'Color', 'Engine', 'Wheel', 'Extra', 'Configuration', 'Order']
+__all__ = ['Car', 'Color', 'Engine', 'Wheel', 'Extra', 'Configuration', 'Order', 'ConfigurationExtra']

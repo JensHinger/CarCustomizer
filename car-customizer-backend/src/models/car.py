@@ -15,7 +15,6 @@ class Car(db.Model):
     engines: Mapped[List["Engine"]] = relationship(back_populates="car")
     extras: Mapped[List["Extra"]] = relationship(back_populates="car")
 
-
     def __repr__(self):
         return f"Car(id={self.id}, name={self.name}, price={self.price})"
     

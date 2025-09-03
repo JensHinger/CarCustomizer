@@ -1,4 +1,4 @@
-from models.car import Car
+from models import Car
 from model import db
 
 def get_all_cars():

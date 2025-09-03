@@ -8,12 +8,18 @@ from services.extra_service import get_all_extras_for_car
 car = Blueprint('car', __name__, url_prefix="/car")
 
 @car.route("/")
-def view_all_cars():
+def View_all_cars():
     cars = get_all_cars()
     return [car.to_dict() for car in cars]
 
 @car.route("/<int:id>")
-def get_all_configuration_items_for_car(id: int):
+def view_car_by_id():
+    car = get_car_by_id(id)
+
+    return car.to_dict()
+
+@car.route("/config/<int:id>")
+def view_all_configuration_items_for_car(id: int):
     car = get_car_by_id(id)
     wheels = get_all_wheels_for_car(id)
     engines = get_all_engines_for_car(id)
