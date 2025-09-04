@@ -28,8 +28,8 @@ export default function ChooseMultipleConfigurationItem(
             (item: configurationItem) => item.id == Number(target.value))[0]
 
         // Deselect option
-        if (selectedItems.includes(item)){
-            setSelectedItems(selectedItems.filter((elem) => elem != item))
+        if (selectedItems.map((item) => item.id).includes(item.id)){
+            setSelectedItems(selectedItems.filter((elem) => elem.id != item.id))
         } else {
             // Select option
             if (selectedItems.length < 5){

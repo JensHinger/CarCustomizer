@@ -42,8 +42,8 @@ def create_app():
                 for x in car_data["extras"]:
                     db.session.add(Extra(id=x["id"], name=x["name"], price=x["price"], car=car))
 
-                    db.session.commit()
-                    return "Test data inserted successfully!"
+            db.session.commit()
+            return "Test data inserted successfully!"
         except Exception as e:
             db.session.rollback()
             return "Error:", e
@@ -55,3 +55,11 @@ def create_app():
     app.register_blueprint(car)
     app.register_blueprint(configuration)
     return app
+
+if __name__ == "__main__":
+    app = create_app()
+    app.run()
+
+    from model import db
+    with app.app_context():
+        db.create_all()

@@ -53,8 +53,8 @@ export default function Configurator(
         setCurrentStep(currentStep + change)
     }
 
-    const orderButtonDisabled = isPending || state?.message == "order-success"
-    const saveButtonDisable = isPending || state?.message == "save-success" || orderButtonDisabled
+    let orderButtonDisabled = isPending || state?.message == "order-success"
+    let saveButtonDisable = isPending || state?.message == "save-success" || orderButtonDisabled
 
     useEffect(() => {
         const totalPrice = car.price +
