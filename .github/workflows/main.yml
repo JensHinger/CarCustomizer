@@ -31,3 +31,8 @@ jobs:
           PGURLSQLALCHEMY: ${{ secrets.PGURLSQLALCHEMY}}
           
         run: npm run deploy:build
+        
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
