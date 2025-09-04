@@ -21,19 +21,8 @@ def create_app():
     @app.route("/seed")
     def seed():
 
-        try:
-            db.session.query(Car).delete()
-            db.session.query(Engine).delete()
-            db.session.query(Color).delete()
-            db.session.query(Wheel).delete()
-            db.session.query(Extra).delete()
-            db.session.query(Order).delete()
-            db.session.query(Configuration).delete()
-            db.session.query(ConfigurationExtra).delete()
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            return "Error:", e
+        db.drop_all()
+        db.create_all()
 
         try:
 
