@@ -41,20 +41,20 @@ def create_app():
                 car = Car(id=car_data["id"], name=car_data["name"], price=car_data["basePrice"])
                 db.session.add(car)
 
-            for e in car_data["engines"]:
-                db.session.add(Engine(id=e["id"], name=e["name"], price=e["price"], car=car))
+                for e in car_data["engines"]:
+                    db.session.add(Engine(id=e["id"], name=e["name"], price=e["price"], car=car))
 
-            for c in car_data["colors"]:
-                db.session.add(Color(id=c["id"], name=c["name"], price=c["price"], car=car))
+                for c in car_data["colors"]:
+                    db.session.add(Color(id=c["id"], name=c["name"], price=c["price"], car=car))
 
-            for w in car_data["rims"]:
-                db.session.add(Wheel(id=w["id"], name=w["name"], price=w["price"], car=car))
+                for w in car_data["rims"]:
+                    db.session.add(Wheel(id=w["id"], name=w["name"], price=w["price"], car=car))
 
-            for x in car_data["extras"]:
-                db.session.add(Extra(id=x["id"], name=x["name"], price=x["price"], car=car))
+                for x in car_data["extras"]:
+                    db.session.add(Extra(id=x["id"], name=x["name"], price=x["price"], car=car))
 
-                db.session.commit()
-                return "Test data inserted successfully!"
+                    db.session.commit()
+                    return "Test data inserted successfully!"
         except Exception as e:
             db.session.rollback()
             return "Error:", e
