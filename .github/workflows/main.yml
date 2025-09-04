@@ -7,6 +7,7 @@ on:
 
 jobs:
   deploy:
+    environment: deploy
     runs-on: self-hosted  # required for local docker-compose to work
     steps:
       - name: Checkout repository
@@ -21,4 +22,12 @@ jobs:
         run: npm run deploy:stop
 
       - name: Build and start containers
+        env:
+          PGUSER: ${{ secrets.PGUSER }}
+          PGPASSWORD: ${{ secrets.PGPASSWORD }}
+          PGDATABASE: ${{ vars.PGDATABASE }}
+          PGPORT: ${{ vars.PGPORT }}
+          BACKENDURL:  ${{ vars.BACKENDURL }}
+          PGURLSQLALCHEMY: ${{ secrets.PGURLSQLALCHEMY}}
+          
         run: npm run deploy:build
