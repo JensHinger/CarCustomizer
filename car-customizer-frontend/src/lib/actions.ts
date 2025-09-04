@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 "use server"
 
 type configurationForm = {
@@ -8,7 +10,7 @@ type configurationForm = {
 }
 
 export async function handleConfigFormSubmit(state: configurationForm, formData: FormData){
-    var object: Record<string, any> = {};
+    const object: Record<string, any> = {};
     formData.forEach((value, key) => {
         if (!object.hasOwnProperty(key)){
             object[key] = value;
@@ -22,7 +24,7 @@ export async function handleConfigFormSubmit(state: configurationForm, formData:
     });
 
 
-    var json = JSON.stringify(object)
+    const json = JSON.stringify(object)
     // Logic for Ordering or creating config is done in backend
     try {
         const res = await fetch(process.env.BACKENDURL + "/configuration", 

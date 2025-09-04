@@ -16,7 +16,7 @@ export function ConfigurationOption(
         isSelected: boolean
     }){
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = () => {
         setChosenOption(item)
     }
     

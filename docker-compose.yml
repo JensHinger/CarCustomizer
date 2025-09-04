@@ -1,14 +1,42 @@
 services:
-  postgresql:
-    image: 'postgres:latest'
-    ports:
-      - $PGPORT:5432
-    volumes:
-      - 'postgresql_data:/var/lib/postgresql/data'
-    environment:
-      POSTGRES_USER: $PGUSER
-      POSTGRES_PASSWORD: $PGPASSWORD
-      POSTGRES_DB: $PGDATABASE
-          
+    postgresql:
+        image: 'postgres:latest'
+        ports:
+            - $PGPORT:5432
+        volumes:
+            - 'postgresql_data:/var/lib/postgresql/data'
+        environment:
+            POSTGRES_USER: $PGUSER
+            POSTGRES_PASSWORD: $PGPASSWORD
+            POSTGRES_DB: $PGDATABASE
+    car-customizer-frontend:
+        container_name: car-customizer-frontend
+        build:
+            context: ./car-customizer-frontend
+            dockerfile: Dockerfile
+            args:
+                BACKENDURL: $BACKENDURL
+        restart: always
+        environment:
+            BACKENDURL: $BACKENDURL
+
+        ports:
+            - 3000:3000
+        depends_on:
+            - car-customizer-backend
+    car-customizer-backend:
+        container_name: car-customizer-backend
+        build:
+            context: ./car-customizer-backend
+            dockerfile: Dockerfile
+        restart: always
+        ports:
+            - 5000:5000
+        environment:
+            - PGURLSQLALCHEMY=postgresql+psycopg2://admin:admin@postgresql:5432/car_customizer
+            - FLASK_APP=src/app_factory.py
+            - URL=${URL}
+        depends_on:
+            - postgresql
 volumes:
   postgresql_data:

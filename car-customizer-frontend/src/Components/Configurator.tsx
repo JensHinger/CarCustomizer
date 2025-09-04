@@ -64,7 +64,7 @@ export default function Configurator(
             selectedExtras.reduce((sum, extra) => sum + extra.price, 0)
 
         setCarPrice(totalPrice)
-    }, [selectedEngine, selectedColor, selectedWheels, selectedExtras])
+    }, [selectedEngine, selectedColor, selectedWheels, selectedExtras, car.price])
 
     return (
          <form 

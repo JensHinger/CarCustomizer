@@ -50,8 +50,6 @@ export default function ChooseMultipleConfigurationItem(
             {
                 configurationItems.map((item) => {
                     const currentItemSelected = selectedItems.find((sel_item) => item.id == sel_item.id) != undefined
-                    console.log(currentItemSelected, item.name)
-                    console.log(selectedItems, item)
                     return  (
                         <div key={item.id} >
                             <label className={`grid grid-cols-2 p-1 items-center rounded-sm cursor-pointer text-center ${currentItemSelected? "bg-zinc-500 hover:bg-zinc-600" : "hover:bg-gray-800"}`}>

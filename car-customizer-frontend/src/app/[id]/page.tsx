@@ -1,5 +1,5 @@
-import { fetchCarById, fetchCarConfigurationItems, fetchConfiguration } from "@/lib/data"
-import Configurator from "@/Components/Configurator"
+import { fetchCarConfigurationItems, fetchConfiguration } from "@/lib/data"
+import Configurator from "@/components/Configurator"
 import Image from "next/image"
 
 export default async function Page(

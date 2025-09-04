@@ -23,10 +23,6 @@ def _find_matching_configuration(
         .where(Configuration.color_id == color_id)
         .where(Configuration.wheel_id == wheel_id)
     ).scalars().all()
-    print(sorted_extras)
-    for config in existing_config:
-        print(config)
-        print(config.extras)
 
     # Compare extras for matching configurations
     for config in existing_config:
@@ -74,7 +70,7 @@ def insert_configuration(
     if not config:
         config = _create_configuration(car_id, engine_id, color_id, wheel_id, extras)
 
-    config_url = f"{os.environ["URL"]}/{car_id}?config_id={config.id}"
+    config_url = f"/{car_id}?config_id={config.id}"
   
     response = {"configuration_url": config_url}
 
@@ -83,6 +79,11 @@ def insert_configuration(
         response["order_id"] = order_id
 
     db.session.commit()
+
+    if action == "place-order":
+        response["message"] = "order-success"
+    else: 
+        response["message"] = "save-success"
 
     return response
 

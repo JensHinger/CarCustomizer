@@ -13,7 +13,7 @@ def View_all_cars():
     return [car.to_dict() for car in cars]
 
 @car.route("/<int:id>")
-def view_car_by_id():
+def view_car_by_id(id):
     car = get_car_by_id(id)
 
     return car.to_dict()
