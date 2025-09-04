@@ -33,7 +33,7 @@ services:
         ports:
             - 5000:5000
         environment:
-            - PGURLSQLALCHEMY=postgresql+psycopg2://admin:admin@postgresql:5432/car_customizer
+            - PGURLSQLALCHEMY=$PGURLSQLALCHEMY
             - FLASK_APP=src/app_factory.py
             - URL=${URL}
         depends_on:

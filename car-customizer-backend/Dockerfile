@@ -11,4 +11,5 @@ COPY src src
 WORKDIR src
 
 EXPOSE 5000
+RUN python ./src/main.py
 CMD ["gunicorn", "-b :5000", "app_factory:create_app()"]

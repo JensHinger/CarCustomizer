@@ -10,16 +10,17 @@ def create_app():
 
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("PGURLSQLALCHEMY")
 
+    from models import Car, Engine, Wheel, Color, Extra, Order, Configuration, ConfigurationExtra
     from model import db
     db.init_app(app)
 
     with app.app_context():
         db.create_all()
 
-    from models import Car, Engine, Wheel, Color, Extra, Order, Configuration, ConfigurationExtra
     # Seed the database with test data
     @app.route("/seed")
     def seed():
+
         try:
             db.session.query(Car).delete()
             db.session.query(Engine).delete()
@@ -29,6 +30,12 @@ def create_app():
             db.session.query(Order).delete()
             db.session.query(Configuration).delete()
             db.session.query(ConfigurationExtra).delete()
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return "Error:", e
+
+        try:
 
             for car_data in data["cars"]:
                 car = Car(id=car_data["id"], name=car_data["name"], price=car_data["basePrice"])
