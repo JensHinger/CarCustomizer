@@ -18,7 +18,7 @@ jobs:
           node-version: 18
 
       - name: Stop running containers
-        run: npm run deploy:stop || true
+        run: npm run deploy:stop
 
       - name: Build and start containers
         run: npm run deploy:build
