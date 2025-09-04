@@ -28,5 +28,6 @@ jobs:
           PGDATABASE: ${{ vars.PGDATABASE }}
           PGPORT: ${{ vars.PGPORT }}
           BACKENDURL:  ${{ vars.BACKENDURL }}
+          PGURLSQLALCHEMY: ${{ secrets.PGURLSQLALCHEMY}}
           
         run: npm run deploy:build
