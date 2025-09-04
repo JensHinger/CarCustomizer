@@ -21,4 +21,10 @@ jobs:
         run: npm run deploy:stop
 
       - name: Build and start containers
+        env:
+          PGUSER: ${{secrets.PGUSER}}
+          PGPASSWORD: ${{secrets.PGPASSWORD}}
+          PGDATABASE: ${{ vars.PGDATABASE }}
+          BACKENDURL:  ${{ vars.BACKENDURL }}
+          
         run: npm run deploy:build
